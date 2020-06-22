@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+:root {
+    --primary-color: #7159c1;
+    --secondary-color: #f7df1e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
