@@ -84,7 +84,7 @@ nav.primary ul {
 
 nav.primary ul li a {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     color: white;
     transition: 200ms;
