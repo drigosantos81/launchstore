@@ -3,7 +3,7 @@
     <div>
         <select name="category_id">
             {% for category in categories %}
-                <option value="{{category.id}}" {% if products.category_id == category.id %}selected{% endif %}>
+                <option value="{{category.id}}" {% if product.category_id == category.id %}selected{% endif %}>
                     {{category.name}}
                 </option>
             {% endfor %}
@@ -18,7 +18,7 @@
                 type="text" 
                 name="name" 
                 placeholder="Digite o título do anúncio" 
-                value="{{ products.name }}"
+                value="{{ product.name }}"
             >
         </div>        
 </div>
@@ -60,16 +60,16 @@
         </div>        
 </div>
 
-{% if product.status %}
+{% if (product.status == '1') or (product.status == 0) %}
     <div class="item">
-        <div>disponível</div>
+        <div>disponível?</div>
         <div>
             <span>
                 <input 
                     type="radio" 
                     name="status" 
                     value="1" 
-                        {% if products.status == "1" %}
+                        {% if product.status == "1" %}
                             checked
                         {% endif %}>Sim
             </span>
@@ -78,7 +78,7 @@
                     type="radio" 
                     name="status"
                     value="0"
-                        {% if products.status == "0" %}
+                        {% if product.status == "0" %}
                             checked
                         {% endif %}>Não
             </span>
