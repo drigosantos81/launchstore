@@ -10,7 +10,7 @@ module.exports = {
         `;
 
         data.price = data.price.replace(/\D/g,"");
-        
+
         const values = [
             data.category_id,
             data.user_id || 1,
@@ -23,6 +23,13 @@ module.exports = {
         ]
 
         return db.query(query, values);        
+    },
+
+    find(id) {
+        return db.query(`
+            SELECT * FROM products
+            WHERE id = $1
+            `, [id]);
     }
 
 }
