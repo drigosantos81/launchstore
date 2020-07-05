@@ -10,6 +10,7 @@ routes.get('/products/create', productsController.create);
 routes.post('/products', productsController.post);
 routes.get('/products/:id/edit', productsController.edit);
 routes.put('/products', productsController.put);
+routes.delete('/products', productsController.delete);
 
 // ALIAS
 routes.get('/ads/create', function(req, res) {
