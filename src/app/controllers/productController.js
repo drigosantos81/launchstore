@@ -37,7 +37,7 @@ module.exports = {
         const filesPromise = req.files.map(file => File.create({ ...file, product_id: productId }));
         await Promise.all(filesPromise);
         
-        return res.redirect(`/products/${productId}`);
+        return res.redirect(`/products/${productId}/edit`);
     },
 
     async edit(req, res) {
