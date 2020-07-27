@@ -207,6 +207,7 @@ form .item select {
 
 form .item textarea {
     min-height: 150px;
+    font-family: roboto;
 }
 
 form .item span {
