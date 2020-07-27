@@ -1,6 +1,8 @@
 const { formatPrice } = require('../../lib/utils');
+
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+const File = require('../models/File');
 
 module.exports = {
     create(req, res) {
@@ -17,14 +19,23 @@ module.exports = {
     async post(req, res) {
         const keys = Object.keys(req.body);
 
+        // VALIDAÇÃO NO FRONTEND(Na página)
         for (key of keys) {
             if (req.body[key] == "") {
                 return res.send("Por favor, preencha todos os campos.");
             }
         }
 
+        // VALIDAÇÃO NO BACKEND(No servidor)
+        if (req.files.length == 0) {
+            return res.send('Por favor, envie pelo menos uma imagem.');
+        }
+
         let results = await Product.create(req.body);
         const productId = results.rows[0].id;
+
+        const filesPromise = req.files.map(file => File.create({ ...file, product_id: productId }));
+        await Promise.all(filesPromise);
         
         return res.redirect(`/products/${productId}`);
     },
