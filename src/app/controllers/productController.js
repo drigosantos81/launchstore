@@ -39,6 +39,10 @@ module.exports = {
         
         return res.redirect(`/products/${productId}/edit`);
     },
+	
+	async show(req, res) {
+		return res.render('products/show');
+	},
 
     async edit(req, res) {
         let results = await Product.find(req.params.id);
@@ -69,12 +73,14 @@ module.exports = {
     async put(req, res) {
         const keys = Object.keys(req.body);
 
+        // VALIDAÇÃO NO FRONTEND(Na página)
         for (key of keys) {
             if (req.body[key] == "" && key != "removed_files") {
                 return res.send("Por favor, preencha todos os campos.");
             }
         }
 
+        // VALIDAÇÃO NO BACKEND(No servidor)
         if (req.files.length != 0) {
             const newFilesPromise = req.files.map(file =>
                 File.create({ ...file, product_id: req.body.id}));
