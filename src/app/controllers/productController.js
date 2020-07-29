@@ -80,14 +80,6 @@ module.exports = {
             }
         }
 
-        // VALIDAÇÃO NO BACKEND(No servidor)
-        if (req.files.length != 0) {
-            const newFilesPromise = req.files.map(file =>
-                File.create({ ...file, product_id: req.body.id}));
-
-            await Promise.all(newFilesPromise);
-        }
-
         if (req.body.removed_files) {
             // 1,2,3
             const removedFiles = req.body.removed_files.split(","); // [1,2,3,]
@@ -97,6 +89,21 @@ module.exports = {
             const removedFilesPromise = removedFiles.map(id => File.delete(id));
 
             await Promise.all(removedFilesPromise);
+        }
+
+        // VALIDAÇÃO NO BACKEND(No servidor)
+        if (req.files.length != 0) {
+
+            // Validar se já existem imagens no banco
+            const oldFiles = await Product.files(req.body.id);
+            const totalFiles = oldFiles.rows.length + req.files.length;
+
+            if (totalFiles <= 6) {
+                const newFilesPromise = req.files.map(file =>
+                    File.create({ ...file, product_id: req.body.id}));
+    
+                await Promise.all(newFilesPromise);
+            }            
         }
 
         req.body.price = req.body.price.replace(/\D/g, "");

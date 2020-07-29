@@ -35,20 +35,7 @@ module.exports = {
         } catch (err) {
             console.error(err);
         }
-                
-        // const result = await db.query(`SELECT * FROM files WHERE id = $1`, [id]);
-        // const file = result.rows[0];
 
-        // fs.unlinkSync(file.path);
-
-        // if (err) {
-        //     return res.send('Receita não encontrada!');;
-        // }
-
-        // return db.query(`
-        //     DELETE FROM files
-        //     WHERE id = $1
-        // `, [id]);
     }
 
 }
