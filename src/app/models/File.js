@@ -30,7 +30,7 @@ module.exports = {
             return db.query(`
                 DELETE FROM files
                 WHERE id = $1
-            `, [id]);
+        `, [id]);
 
         } catch (err) {
             console.error(err);
