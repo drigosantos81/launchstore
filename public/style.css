@@ -22,12 +22,21 @@ html, body {
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f9f9f9;
+    
+    /* PARA O FOOTER FICAR FIXO EMBAIXO - PARTE 1 */
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     width: 90%;
     max-width: 940px;
     margin: 0 auto;
+}
+
+/* PARA O FOOTER FICAR FIXO EMBAIXO - PARTE 2 */
+footer {
+    margin-top: auto;
 }
 
 .button {
