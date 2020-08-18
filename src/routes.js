@@ -3,10 +3,9 @@ const routes = express.Router();
 
 const multer = require('./app/middlewares/multer');
 const productsController = require('./app/controllers/productController');
+const HomeController = require('./app/controllers/HomeController');
 
-routes.get('/', function(req, res) {
-    return res.render('home/index.njk');
-});
+routes.get('/', HomeController.index);
 
 routes.get('/products/create', productsController.create);
 routes.get('/products/:id', productsController.show);
