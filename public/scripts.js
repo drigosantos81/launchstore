@@ -11,6 +11,39 @@ const Mask = {
             style: 'currency',
             currency: 'BRL'
         }).format(value/100); 
+    },
+    cpfCnpj(value) {
+        value = value.replace(/\D/g,"");
+
+        if (value.length > 14) {
+            value = value.slice(0, -1);
+        }
+
+        // Checa se é CPF ou CNPJ
+        if (value.length > 11) {
+            value = value.replace(/(\d{2})(\d)/, "$1.$2"); // 11.222333444455
+            value = value.replace(/(\d{3})(\d)/, "$1.$2"); // 11.222.333444455
+            value = value.replace(/(\d{3})(\d)/, "$1/$2"); // 11.222.333/444455
+            value = value.replace(/(\d{4})(\d)/, "$1-$2"); // 11.222.333/4444-55
+        } else {
+            value = value.replace(/(\d{3})(\d)/, "$1.$2"); // 111.22233344
+            value = value.replace(/(\d{3})(\d)/, "$1.$2"); // 11.222.33344
+            value = value.replace(/(\d{3})(\d)/, "$1-$2"); // 11.222.333-44
+        }
+
+        return value;
+    },
+    cep(value) {
+        value = value.replace(/\D/g,"");
+
+        if (value.length > 8) {
+            value = value.slice(0, -1);
+        }
+
+        value = value.replace(/(\d{2})(\d)/, "$1.$2"); // 11.222333
+        value = value.replace(/(\d{3})(\d)/, "$1-$2"); // 11.222-333
+
+        return value;
     }
 }
 
