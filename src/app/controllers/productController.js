@@ -65,7 +65,7 @@ module.exports = {
         const files = results.rows.map(file => ({
             ...file,
             src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
-        }))
+        }));
 
 		return res.render('products/show', { product, files });
 	},
@@ -150,5 +150,4 @@ module.exports = {
 
         return res.redirect(`/products/create`);
     }
-
 }
