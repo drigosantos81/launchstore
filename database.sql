@@ -44,7 +44,6 @@ CREATE TABLE "users" (
 ALTER TABLE "products" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 -- Create Procedure
-/*
   CREATE FUNCTION trigger_set_timestamp()
   RETURNS TRIGGER AS $$
   BEGIN
@@ -52,20 +51,25 @@ ALTER TABLE "products" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
     RETURN NEW;
   END
   $$ LANGUAGE plpgsql;
-*/
 
 -- Auto updated_at products
-/*
-  CREATE TRIGGER set_timestamp
+CREATE TRIGGER set_timestamp
   BEFORE UPDATE ON products
   FOR EACH ROW
   EXECUTE PROCEDURE trigger_set_timestamp();
-*/
 
 -- Auto updated_at users
-/*
-  CREATE TRIGGER set_timestamp
+CREATE TRIGGER set_timestamp
   BEFORE UPDATE ON users
   FOR EACH ROW
   EXECUTE PROCEDURE trigger_set_timestamp();
-*/
+
+  -- Connect pg simple table
+  CREATE TABLE "session" (
+    "sid" VARCHAR NOT NULL COLLATE "default",
+    "sess" JSON NOTNULL,
+    "expire" TIMESTAMP(6) NOT NULL
+  )
+
+  WITH (OIDS=FALSE);
+  ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid")
