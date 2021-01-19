@@ -10,14 +10,16 @@ const { isLoggedRedirectToUsers, onlyUsers } = require('../app/middlewares/sessi
 
 /* ==== LOGIN/LOGOUT: SessionController ==== */
 routes.get('/login', isLoggedRedirectToUsers, SessionController.loginForm);
+
 routes.post('/login', SessionValidator.login, SessionController.login);
 routes.post('/logout', SessionController.logout);
 
 /* ==== Reset password / Forgot: SessionController ==== */
-// routes.get('/forgot-password', SessionController.forgotForm);
-// routes.get('/password-reset', SessionController.resetForm);
-// routes.post('/forgot-password', SessionController.forgot);
-// routes.post('/password-reset', SessionController.reset);
+routes.get('/forgot-password', SessionController.forgotForm);
+routes.get('/password-reset', SessionController.resetForm);
+
+routes.post('/forgot-password', SessionValidator.forgot, SessionController.forgot);
+routes.post('/password-reset', SessionValidator.reset, SessionController.reset);
 
 /* ==== USER REGISTER: UserController ==== */
 routes.get('/register', UserController.registerForm);
