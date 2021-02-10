@@ -1,3 +1,8 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+CREATE DATABASE launchstore;
+
 CREATE TABLE "products" (
   "id" SERIAL PRIMARY KEY,
   "category_id" int NOT NULL,
@@ -67,12 +72,14 @@ CREATE TRIGGER set_timestamp
   -- Connect pg simple table
   CREATE TABLE "session" (
     "sid" VARCHAR NOT NULL COLLATE "default",
-    "sess" JSON NOTNULL,
+    "sess" JSON NOT NULL,
     "expire" TIMESTAMP(6) NOT NULL
   )
 
   WITH (OIDS=FALSE);
-  ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid")
+  ALTER TABLE "session" 
+  ADD CONSTRAINT "session_pkey" 
+  PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 /* ==== DELETE CASCADE ==*/
 ALTER TABLE "products"
@@ -88,3 +95,13 @@ ADD CONSTRAINT files_product_id_fkey
 FOREIGN KEY ("product_id")
 REFERENCES "products" ("id")
 ON DELETE CASCADE;
+
+-- Para rodar o seeds
+DELETE FROM products;
+DELETE FROM users;
+DELETE FROM files;
+
+-- Reiniciar a sequência do auto_increment da tabelas ids
+ALTER SEQUENCE products_id_seq RESTART WITH 1;
+ALTER SEQUENCE users_id_seq RESTART WITH 1;
+ALTER SEQUENCE files_id_seq RESTART WITH 1;
