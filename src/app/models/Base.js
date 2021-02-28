@@ -5,12 +5,10 @@ function find(filters, table) {
 
   if (filters) {
     Object.keys(filters).map(key => {
-      query = `${query}
-        ${key}
-      `
+      query += `${key}`
   
       Object.keys(filters[key]).map(field => {
-        query = `${query} ${field} = '${filters[key][field]}'`
+        query += `${field} = '${filters[key][field]}'`
       });
     });
   }
@@ -105,7 +103,7 @@ const Base = {
 
   delete(id) {
     return db.query(`DELETE FROM ${this.table} WHERE id = $1`, [id]);
-}
+  }
 }
 
 module.exports = Base;

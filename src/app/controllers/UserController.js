@@ -28,18 +28,18 @@ module.exports = {
 			try {
 				let { name, email, password, cpf_cnpj, cep, address } = req.body;
 
-				const passwordHash = await hash(password, 8);
+				password = await hash(password, 8);
 				cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
 				cep = cep.replace(/\D/g, "");
 
-				const userId = await User.create(
+				const userId = await User.create({
 					name,
 					email,
 					password,
 					cpf_cnpj,
 					cep,
 					address
-				);
+				});
 
 				req.session.userId = userId;
 
@@ -96,8 +96,8 @@ module.exports = {
 			req.session.destroy();
 
 			// REMOVER AS IMAGENS DA PASTA
-			promiseResults.map(results => {
-				results.rows.map(file => {
+			promiseResults.map(files => {
+				files.map(file => {
 					try {
 						unlinkSync(file.path);
 					} catch (error) {

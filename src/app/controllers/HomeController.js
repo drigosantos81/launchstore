@@ -1,6 +1,6 @@
-const { formatPrice } = require('../../lib/utils');
-
 const Product = require('../models/Product');
+
+const { formatPrice } = require('../../lib/utils');
 
 module.exports = {
 	async index(req, res) {
@@ -25,7 +25,7 @@ module.exports = {
 				product.oldPrice = formatPrice(product.old_price);
 				product.price = formatPrice(product.price);
 				return product;
-			}) 	// .filter((product, index) => index > 2 ? false : true);
+			}) // .filter((product, index) => index > 2 ? false : true);
 
 			const lastAdded = await Promise.all(productsPromise);
 
