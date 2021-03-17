@@ -3,8 +3,7 @@ const { unlinkSync } = require('fs');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
 const File = require('../models/File');
-
-const { formatPrice, date } = require('../../lib/utils');
+const LoadProductsService = require('../services/LoadProductService');
 
 module.exports = {
 	async create(req, res) {
@@ -63,33 +62,9 @@ module.exports = {
 
 	async show(req, res) {
 		try {
-			const product = await Product.find(req.params.id);
+			const product = await LoadProductsService.load('product', { where: { id: req.params.id }});
 
-			if (!product) {
-				return res.send('Produto não encontrado');
-			}
-
-			const { year, month, day, hour, minutes } = date(product.updated_at);
-
-			product.published = {
-				year,
-				month,
-				day: `${day}/${month}/${year}`,
-				hour: `${hour}:${minutes}h`,
-				minutes
-			}
-
-			product.old_price = formatPrice(product.old_price);
-			product.price = formatPrice(product.price);
-
-			let files = await Product.files(product.id);
-			files = files.map(file => ({
-				...file,
-				src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
-			}));
-
-			return res.render('products/show', { product, files });
-
+			return res.render('products/show', { product });
 		} catch (error) {
 			console.error(error);
 		}
@@ -97,26 +72,12 @@ module.exports = {
 
 	async edit(req, res) {
 		try {
-			const product = await Product.find(req.params.id);
-
-			if (!product) {
-				return res.send('Produto não encontrado');
-			}
-
-			product.old_price = formatPrice(product.old_price);
-			product.price = formatPrice(product.price);
+			const product = await LoadProductsService.load('product', { where: { id: req.params.id }});
 			
 			// Get category
 			const categories = await Category.findAll();
-			
-			// Get images
-			let files = await Product.files(product.id);
-			files = files.map(file => ({
-				...file,
-				src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
-			}));
 
-			return res.render('products/edit', { product, categories, files });
+			return res.render('products/edit', { product, categories });
 
 		} catch (error) {
 			console.error(error);
@@ -134,6 +95,26 @@ module.exports = {
 				}
 			}
 
+			// VALIDAÇÃO NO BACKEND(No servidor)
+			if (req.files.length != 0) {
+				const newFilesPromise = req.files.map(file =>
+					File.create({ ...file, product_id: req.body.id })
+				);
+
+				await Promise.all(newFilesPromise);
+			}
+			// if (req.files.length != 0) { // Validar se já existem imagens no banco
+			// 	const oldFiles = await Product.files(req.body.id);
+			// 	const totalFiles = oldFiles.rows.length + req.files.length;
+
+			// 	if (totalFiles <= 6) {
+			// 		const newFilesPromise = req.files.map(file =>
+			// 			File.create({ ...file, product_id: req.body.id}));
+
+			// 		await Promise.all(newFilesPromise);
+			// 	}
+			// }
+
 			if (req.body.removed_files) {
 				// 1,2,3
 				const removedFiles = req.body.removed_files.split(","); // [1,2,3,]
@@ -145,27 +126,12 @@ module.exports = {
 				await Promise.all(removedFilesPromise);
 			}
 
-			// VALIDAÇÃO NO BACKEND(No servidor)
-			if (req.files.length != 0) {
-				// Validar se já existem imagens no banco
-				const oldFiles = await Product.files(req.body.id);
-				const totalFiles = oldFiles.rows.length + req.files.length;
-
-				if (totalFiles <= 6) {
-					const newFilesPromise = req.files.map(file =>
-						File.create({ ...file, product_id: req.body.id}));
-
-					await Promise.all(newFilesPromise);
-				}
-			}
-
-			price = price.replace(/\D/g, "");
+			req.body.price = req.body.price.replace(/\D/g, "");
 			// req.body.price = price.replace(/\D/g, "");
 
 			if (req.body.old_price != req.body.price) {
 				const oldProduct = await Product.find(req.body.id);
-
-				req.body.old_price = oldProduct.rows[0].price;
+				req.body.old_price = oldProduct.price;
 			}
 
 			await Product.update(req.body.id, {
@@ -194,7 +160,7 @@ module.exports = {
 			try {
 				unlinkSync(file.path);
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 			}
 		});
 

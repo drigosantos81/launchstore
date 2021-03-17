@@ -4,7 +4,6 @@ const { hash } = require('bcryptjs');
 const User = require('../models/User');
 const mailer = require('../../lib/mailer');
 
-
 module.exports = {
   loginForm(req, res) {
     return res.render('session/login');
