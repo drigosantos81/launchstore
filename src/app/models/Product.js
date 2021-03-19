@@ -41,6 +41,7 @@ module.exports = {
 			LEFT JOIN categories ON (categories.id = products.category_id)
 			${filterQuery}
 		`
+		console.log(query);
 
 		const results = await db.query(query);
 		return results.rows;

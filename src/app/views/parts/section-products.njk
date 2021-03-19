@@ -12,9 +12,24 @@
 						class="image"
 						style="background-image: url('
 							{{product.img 
-								if product.img else '//placehold.it/500x500?text=Produto sem imagem'
-							}}')"
+								if product.img else 'http://placehold.it/500x500?text=Produto sem imagem'
+							}}
+						')"
 					>
+					{# //
+						placehold.it/500x500?text=Produto sem imagem
+						http://localhost:5000\\images\\1588873344953-images.jpg
+						http://localhost:5000/images/1588873344953-images.jpg #}
+
+						{# <img src="{{product.files[0].src}}" alt=""> #}
+
+						{# "background-image: url('
+							{{product.img 
+								if product.img else '//placehold.it/500x500?text=Produto sem imagem'
+							}}
+						')" #}
+
+						{# http://placehold.it/500x500?text=PRODUTO SEM FOTO #}
 					</div>
 						{% if product.formattedOldPrice != product.formattedPrice %}
 							<div class="old-price">{{product.formattedOldPrice}}</div>

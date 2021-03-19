@@ -77,8 +77,10 @@ module.exports = {
 			// Get category
 			const categories = await Category.findAll();
 
-			return res.render('products/edit', { product, categories });
+			console.log('PRODUCT: ', product);
+			console.log('REQ.BODY: ', req.body);
 
+			return res.render('products/edit', { product, categories });
 		} catch (error) {
 			console.error(error);
 		}
@@ -143,6 +145,8 @@ module.exports = {
 				quantity: req.body.quantity,
 				status: req.body.status,
 			});
+
+			console.log('REQ.BODY: ', req.body);
 
 			return res.redirect(`/products/${req.body.id}`);
 

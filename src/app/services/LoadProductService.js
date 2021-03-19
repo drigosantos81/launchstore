@@ -2,14 +2,37 @@ const Product = require('../models/Product');
 
 const { formatPrice, date } = require('../../lib/utils');
 
-async function getImages(productId) {
-  let files = await Product.files(productId);
-  files = files.map(file => ({
-    ...file,
-    src: `${file.path.replace('public', '')}`
-  }));
+async function getImages(productId) {  
+    let files = await Product.files(productId);
+    files = files.map(file => ({
+      ...file,
+      src: `//${file.path.replace('public', '')}`
+    }));
+
+    // let file = files[0];
+    // try {
+    //   file = files[0].replace(/\\/g, '/');
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
   return files;
+
+//   async function getImage(productId) {
+//     let results = await Product.files(productId);
+//     const files = results.rows.map(file => `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`)
+//     let file = files[0]
+//     try {
+//         file = files[0].replace(/\\/g, '/')
+//      } catch {}
+//      return file
+// }
+
+//
+    // placehold.it/500x500?text=Produto sem imagem
+    // http://localhost:5000\\images\\1588873344953-images.jpg
+    // http://localhost:5000/images/1588873344953-images.jpg
+
 }
 
 async function format(product) {
