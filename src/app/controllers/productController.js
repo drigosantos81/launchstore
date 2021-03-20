@@ -19,8 +19,6 @@ module.exports = {
 
 	async post(req, res) {
 		try {
-			
-
 			let { category_id, name, description, old_price, price, quantity, status } = req.body;
 
 			price = price.replace(/\D/g,"");
