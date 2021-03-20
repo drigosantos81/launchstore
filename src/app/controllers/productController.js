@@ -19,19 +19,7 @@ module.exports = {
 
 	async post(req, res) {
 		try {
-			const keys = Object.keys(req.body);
-
-			// VALIDAÇÃO NO FRONTEND(Na página)
-			for (key of keys) {
-				if (req.body[key] == "") {
-					return res.send("Por favor, preencha todos os campos.");
-				}
-			}
-
-			// VALIDAÇÃO NO BACKEND(No servidor)
-			if (req.files.length == 0) {
-				return res.send('Por favor, envie pelo menos uma imagem.');
-			}
+			
 
 			let { category_id, name, description, old_price, price, quantity, status } = req.body;
 
@@ -50,7 +38,7 @@ module.exports = {
 
 			const filesPromise = req.files.map(file => 
 				File.create({ name: file.filename, path: file.path, product_id }));
-				// File.create({ name: file.filename, path: file.path, product_id }));
+
 			await Promise.all(filesPromise);
 			
 			return res.redirect(`/products/${product_id}/edit`);
@@ -76,10 +64,7 @@ module.exports = {
 			
 			// Get category
 			const categories = await Category.findAll();
-
-			console.log('PRODUCT: ', product);
-			console.log('REQ.BODY: ', req.body);
-
+			
 			return res.render('products/edit', { product, categories });
 		} catch (error) {
 			console.error(error);
@@ -88,14 +73,7 @@ module.exports = {
 
 	async put(req, res) {
 		try {
-			const keys = Object.keys(req.body);
-
-			// VALIDAÇÃO NO FRONTEND(Na página)
-			for (key of keys) {
-				if (req.body[key] == "" && key != "removed_files") {
-					return res.send("Por favor, preencha todos os campos.");
-				}
-			}
+			console.log('KEYS DO REQ.BODY: ', req.body);
 
 			// VALIDAÇÃO NO BACKEND(No servidor)
 			if (req.files.length != 0) {
@@ -117,8 +95,7 @@ module.exports = {
 			// 	}
 			// }
 
-			if (req.body.removed_files) {
-				// 1,2,3
+			if (req.body.removed_files) { // 1,2,3
 				const removedFiles = req.body.removed_files.split(","); // [1,2,3,]
 				const lastIndex = removedFiles.length - 1;
 				removedFiles.splice(lastIndex, 1); // [1,2,3]
@@ -129,7 +106,6 @@ module.exports = {
 			}
 
 			req.body.price = req.body.price.replace(/\D/g, "");
-			// req.body.price = price.replace(/\D/g, "");
 
 			if (req.body.old_price != req.body.price) {
 				const oldProduct = await Product.find(req.body.id);
@@ -149,7 +125,6 @@ module.exports = {
 			console.log('REQ.BODY: ', req.body);
 
 			return res.redirect(`/products/${req.body.id}`);
-
 		} catch (error) {
 			console.error(error);
 		}

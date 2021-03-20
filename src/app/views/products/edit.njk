@@ -3,7 +3,6 @@
 {% block content %}
 	<section class="container form">
 		<form method="POST" action="/products?_method=PUT" enctype="multipart/form-data">
-
 			<div class="header">
 				<h3>Editar produto {{productId}}</h3>
 			</div>
@@ -26,7 +25,7 @@
 	<script>
 		const formDelete = document.querySelector("#form-delete");
 		formDelete.addEventListener("submit", function(event) {
-			const confirmation = confirm("Deseja deletar este usuário?");
+			const confirmation = confirm("Deseja deletar este produto?");
 			if (!confirmation) {
 				event.preventDefault();
 			}

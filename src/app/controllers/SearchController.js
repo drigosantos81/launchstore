@@ -4,11 +4,9 @@ const LoadProductsService = require('../services/LoadProductService');
 module.exports = {
 	async index(req, res) {
 		try {
-			const { filter, category } = req.query;
+			let { filter, category } = req.query;
 
-			if (!filter || filter.toLowerCase() == 'Toda a loja') {
-				filter = null;
-			}
+			if (!filter || filter.toLowerCase() == 'toda a loja') filter = null;
 
 			let products = await Product.search({ filter, category });
 
@@ -34,7 +32,6 @@ module.exports = {
 			}, []);
 
 			return res.render("search/index", { products, search, categories });
-
 		}
 		catch(err) {
 			console.log(err);
