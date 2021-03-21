@@ -9,17 +9,17 @@
 			{% for product in products %}
 				<div class="product">
 					<div 
-						class="image"
-						style="background-image: url('{{product.img if product.img else 'http://placehold.it/500x500?text=Produto sem imagem'}}')"
-					>
-					
+						class="image" 
+						style="background-image: url('{{product.img if product.img else 'http://placehold.it/500x500?text=Produto sem imagem'}}')">
 					</div>
-						{% if product.formattedOldPrice != product.formattedPrice %}
-							<div class="old-price">{{product.formattedOldPrice}}</div>
-						{% endif %}
-						<p>{{product.formattedPrice}}</p>
-						<h4>{{product.name}}</h4>
-						<a href="/products/{{product.id}}" class="button">Ver Produto</a>
+
+					{% if product.formattedOldPrice != product.formattedPrice %}
+						<div class="old">{{product.formattedOldPrice}}</div>
+					{% endif %}
+
+					<p>{{product.formattedPrice}}</p>
+					<h4>{{product.name}}</h4>
+					<a href="/products/{{product.id}}" class="button">Ver Produto</a>
 				</div>
 			{% endfor %}
 		</div>

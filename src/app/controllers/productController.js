@@ -49,6 +49,7 @@ module.exports = {
 	async show(req, res) {
 		try {
 			const product = await LoadProductsService.load('product', { where: { id: req.params.id }});
+			console.log('PRODUCT: ', product);
 
 			return res.render('products/show', { product });
 		} catch (error) {
