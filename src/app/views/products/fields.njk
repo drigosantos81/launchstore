@@ -72,7 +72,7 @@
 			onkeydown="Mask.apply(this, 'formatBRL')"
 		>
 	</div>
-	{% if product.old_price %}
+	{% if product.formattedOld_price %}
 		<input type="hidden" name="old_price" value="{{product.formattedOld_price}}">
 	{% endif %}
 </div>

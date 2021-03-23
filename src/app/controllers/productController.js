@@ -11,7 +11,6 @@ module.exports = {
 			const categories = await Category.findAll();
 
 			return res.render("products/create.njk", { categories });
-
 		} catch (error) {
 			console.error(error);
 		}
@@ -40,7 +39,6 @@ module.exports = {
 			await Promise.all(filesPromise);
 			
 			return res.redirect(`/products/${product_id}/edit`);
-
 		} catch (error) {
 			console.error(error);
 		}
@@ -49,7 +47,6 @@ module.exports = {
 	async show(req, res) {
 		try {
 			const product = await LoadProductsService.load('product', { where: { id: req.params.id }});
-			console.log('PRODUCT: ', product);
 
 			return res.render('products/show', { product });
 		} catch (error) {
@@ -72,8 +69,6 @@ module.exports = {
 
 	async put(req, res) {
 		try {
-			console.log('KEYS DO REQ.BODY: ', req.body);
-
 			// VALIDAÇÃO NO BACKEND(No servidor)
 			if (req.files.length != 0) {
 				const newFilesPromise = req.files.map(file =>
@@ -82,18 +77,7 @@ module.exports = {
 
 				await Promise.all(newFilesPromise);
 			}
-			// if (req.files.length != 0) { // Validar se já existem imagens no banco
-			// 	const oldFiles = await Product.files(req.body.id);
-			// 	const totalFiles = oldFiles.rows.length + req.files.length;
-
-			// 	if (totalFiles <= 6) {
-			// 		const newFilesPromise = req.files.map(file =>
-			// 			File.create({ ...file, product_id: req.body.id}));
-
-			// 		await Promise.all(newFilesPromise);
-			// 	}
-			// }
-
+			
 			if (req.body.removed_files) { // 1,2,3
 				const removedFiles = req.body.removed_files.split(","); // [1,2,3,]
 				const lastIndex = removedFiles.length - 1;
@@ -120,8 +104,6 @@ module.exports = {
 				quantity: req.body.quantity,
 				status: req.body.status,
 			});
-
-			console.log('REQ.BODY: ', req.body);
 
 			return res.redirect(`/products/${req.body.id}`);
 		} catch (error) {
