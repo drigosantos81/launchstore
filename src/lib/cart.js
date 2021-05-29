@@ -21,7 +21,7 @@ const Cart = {
   // Adicionar 1 item
   addOne(product) {
     // Verifica se o produto já existe no carrinho
-    let inCart = this.items.find(item => item.product.id == product.id);
+    let inCart = this.getCartItem(product.id);
 
     // Se o produto ainda não existir
     if (!inCart) {
@@ -59,7 +59,7 @@ const Cart = {
   // Remover 1 item
   removeOne(productId) {
     // Pegar o item do carrinho
-    let inCart = this.items.find(item => item.product.id == productId);
+    const inCart = this.getCartItem(productId);
 
     if (!inCart) {
       return this;
@@ -77,7 +77,7 @@ const Cart = {
 
     if (inCart.quantity < 1) {
       this.items = this.items.filter(item => 
-          item.product.id !=inCart.product.id
+          item.product.id != inCart.product.id
         );
       // Versão 1
       // const itemIndex = this.items.indexOf(inCart);
@@ -90,42 +90,30 @@ const Cart = {
   },
 
   // Deletar todo o item
-  delete(productId) {}
+  delete(productId) {
+    const inCart = this.getCartItem(productId);
+
+    // Verifica se existe produtos no carrinho
+    if (!inCart) {
+      return this;
+    }
+
+    // Atualiza a quantidade total do carrinho
+    if (this.items.length > 0) {
+      this.total.quantity -= inCart.quantity;
+      this.total.price -= (inCart.product.price * inCart.quantity);
+      this.total.formattedPrice = formatPrice(this.total.price);
+    }
+
+    this.items = this.items.filter(item => inCart.product.id != item.product.id);
+
+    return this;
+  },
+
+  // DRY => Don't Repeat Yourself!!!
+  getCartItem(productId) {
+    return this.items.find(item => item.product.id == productId);
+  }
 }
-
-// ==== TESTES ====
-const product = {
-  id: 1,
-  price: 199,
-  quantity: 2
-}
-
-const product2 = {
-  id: 2,
-  price: 299,
-  quantity: 1
-}
-
-console.log('Add FIRST cart item');
-let oldCart = Cart.init().addOne(product);
-console.log(oldCart);
-
-console.log('Add SECOND cart item');
-oldCart = Cart.init(oldCart).addOne(product);
-console.log(oldCart);
-
-console.log('Add THIRD cart item');
-oldCart = Cart.init(oldCart).addOne(product2);
-console.log(oldCart);
-
-console.log('remove one cart item');
-oldCart = Cart.init(oldCart).removeOne(product.id);
-console.log(oldCart);
-
-console.log('remove one cart item');
-oldCart = Cart.init(oldCart).removeOne(product.id);
-console.log(oldCart);
-
-// ==== FINAL TESTES ====
 
 module.exports = Cart;
