@@ -1,4 +1,3 @@
-const { addOne } = require('../../lib/cart');
 const Cart = require('../../lib/cart');
 
 const LoadProductsService = require('../services/LoadProductService');
@@ -65,6 +64,24 @@ module.exports = {
 			// Redirecionar o usuário para a tela do carrinho
 			return res.redirect('/cart');
 		} 
+		catch (err) {
+			console.log(err);
+		}
+	},
+
+	async delete(req, res) {
+		try {
+			let { id } = req.params;
+			let { cart } = req.session;
+
+			if (!cart) {
+				return
+			}
+
+			req.session.cart = Cart.init(cart).delete(id); // OU req.session.cart = cart;
+
+			return res.redirect('/cart');
+		}
 		catch (err) {
 			console.log(err);
 		}

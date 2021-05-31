@@ -121,3 +121,16 @@ button {
 .cart .button.order:hover {
   background: rgb(0, 220, 64);
 }
+
+/* CARRINHO VAZIO */
+.cart-empity {
+  text-align: center;
+}
+
+.cart-empity p {
+  font-size: 18px;
+}
+.cart-empity .button {
+  width: 240px;
+  margin: 16px auto;
+}
