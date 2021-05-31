@@ -3,7 +3,7 @@ const routes = express.Router();
 
 const CartController = require('../app/controllers/CartController');
 
-/* ==== LOGIN/LOGOUT: CartController ==== */
+/* ==== ADICIONA E/OU REMOVE PRODUTOS: CartController ==== */
 routes.get('/', CartController.index);
 
 routes.post('/:id/add-one', CartController.addOne);

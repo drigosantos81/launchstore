@@ -48,27 +48,6 @@ CREATE TABLE "users" (
 -- Foreign Key
 ALTER TABLE "products" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
--- Create Procedure
-  CREATE FUNCTION trigger_set_timestamp()
-  RETURNS TRIGGER AS $$
-  BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-  END
-  $$ LANGUAGE plpgsql;
-
--- Auto updated_at products
-CREATE TRIGGER set_timestamp
-  BEFORE UPDATE ON products
-  FOR EACH ROW
-  EXECUTE PROCEDURE trigger_set_timestamp();
-
--- Auto updated_at users
-CREATE TRIGGER set_timestamp
-  BEFORE UPDATE ON users
-  FOR EACH ROW
-  EXECUTE PROCEDURE trigger_set_timestamp();
-
   -- Connect pg simple table
   CREATE TABLE "session" (
     "sid" VARCHAR NOT NULL COLLATE "default",
@@ -105,3 +84,49 @@ DELETE FROM files;
 ALTER SEQUENCE products_id_seq RESTART WITH 1;
 ALTER SEQUENCE users_id_seq RESTART WITH 1;
 ALTER SEQUENCE files_id_seq RESTART WITH 1;
+
+-- Tabela para salvar as vendas (pedidos)
+CREATE TABLE "orders" (
+	"id" SERIAL PRIMARY KEY,
+  "seller_id" int NOT NULL,
+  "buyer_id" int NOT NULL,
+  "product_id" int NOT NULL,
+  "price" int NOT NULL,
+  "quantity" int DEFAULT 0,
+  "total" int NOT NULL,
+  "status" text NOT NULL,
+  "created_at" timestamp DEFAULT (now()),
+  "updated_at" timestamp DEFAULT (now())
+);
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("seller_id") REFERENCES "users" ("id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("buyer_id") REFERENCES "users" ("id");
+ALTER TABLE "orders" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+
+-- TRIGGERS
+-- Create Procedure
+  CREATE FUNCTION trigger_set_timestamp()
+  RETURNS TRIGGER AS $$
+  BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+  END
+  $$ LANGUAGE plpgsql;
+
+-- Auto updated_at products
+CREATE TRIGGER set_timestamp
+  BEFORE UPDATE ON products
+  FOR EACH ROW
+  EXECUTE PROCEDURE trigger_set_timestamp();
+
+-- Auto updated_at users
+CREATE TRIGGER set_timestamp
+  BEFORE UPDATE ON users
+  FOR EACH ROW
+  EXECUTE PROCEDURE trigger_set_timestamp();
+
+-- Auto updated_at orders
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON orders
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
