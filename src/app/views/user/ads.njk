@@ -8,10 +8,10 @@
         <div class="item">
           <div 
             class="image"
-            style="background-image: url({{product.img}})"
+            style="background-image: url('{{product.img if product.img else '//placehold.it/75x75?text=Sem imagem'}}')"
           >
           </div>
-
+{# style="background-image: url({{product.img}})" #}
           <div class="info">
             <div class="title">{{product.name}}</div>
             <div class="price">{{product.formattedPrice}}</div>
@@ -19,7 +19,7 @@
 
             <div class="actions">
               <a href="/products/{{product.id}}/edit">Editar</a>
-              <a href="/products/{{product.id}}/edit"> Ver</a>
+              <a href="/products/{{product.id}}"> Ver</a>
             </div>
           </div>
         </div>

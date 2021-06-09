@@ -2,11 +2,14 @@
 {% import 'parts/cards.njk' as cards %}
 
 {% block content %}
+
   {% if (cart.items) and (cart.items.length < 1) %}
+
     {% call cards.render('', 'cart-empity container') %}
       <p>Seu caarrinho está vazio</p>
       <a href="/products/search" class="button">Comprar agora</a>
     {% endcall %}
+
   {% else %}
     {% call cards.render('Carrinho', 'cart container') %}
       <div class="header">
@@ -65,5 +68,7 @@
         </form>
       </div>
     {% endcall %}
+    
   {% endif %}
+
 {% endblock %}

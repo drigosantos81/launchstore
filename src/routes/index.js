@@ -12,7 +12,7 @@ routes.get('/', HomeController.index);
 routes.use('/products', products);
 routes.use('/users', users);
 routes.use('/cart', cart);
-routes.use('/cart', orders);
+routes.use('/orders', orders);
 
 // ALIAS
 routes.get('/ads/create', function(req, res) {

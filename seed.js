@@ -1,5 +1,6 @@
 const { hash } = require('bcryptjs');
 const faker = require('faker');
+faker.locale = 'pt_BR';
 
 const User = require('./src/app/models/User');
 const Product = require('./src/app/models/Product');
@@ -18,8 +19,8 @@ async function createUsers() {
       name: faker.name.firstName(),
       email: faker.internet.email(),
       password,
-      cpf_cnpj: faker.random.number(99999999999),
-      cep: faker.random.number(99999999),
+      cpf_cnpj: faker.random.number(99999999999, 99999999999999),
+      cep: faker.address.zipCode(),
       address: faker.address.streetName(),
     });
   }
@@ -71,4 +72,6 @@ async function init() {
 
 init();
 
-createUsers();
+  // cpf_cnpj: faker.datatype.number({
+  //   max: 14
+  // }),
