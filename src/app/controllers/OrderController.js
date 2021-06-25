@@ -105,6 +105,8 @@ module.exports = {
       where: { id: req.params.id }
     });
 
+    console.log(order);
+
     return res. render('orders/details', { order });
   }
 }
