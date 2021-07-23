@@ -105,7 +105,7 @@ ALTER TABLE "orders" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id")
 
 -- TRIGGERS
 -- Create Procedure
-  CREATE FUNCTION trigger_set_timestamp()
+CREATE FUNCTION trigger_set_timestamp()
   RETURNS TRIGGER AS $$
   BEGIN
     NEW.updated_at = NOW();
@@ -115,15 +115,15 @@ ALTER TABLE "orders" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id")
 
 -- Auto updated_at products
 CREATE TRIGGER set_timestamp
-  BEFORE UPDATE ON products
-  FOR EACH ROW
-  EXECUTE PROCEDURE trigger_set_timestamp();
+BEFORE UPDATE ON products
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- Auto updated_at users
 CREATE TRIGGER set_timestamp
-  BEFORE UPDATE ON users
-  FOR EACH ROW
-  EXECUTE PROCEDURE trigger_set_timestamp();
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- Auto updated_at orders
 CREATE TRIGGER set_timestamp
